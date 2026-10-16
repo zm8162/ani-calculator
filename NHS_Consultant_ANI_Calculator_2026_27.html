@@ -1,0 +1,1737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NHS Consultant ANI Calculator 2026/27</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #e8eef5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: #005eb8;
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.25rem;
+        }
+
+        header p {
+            font-size: 0.95rem;
+            opacity: 0.95;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .section-card {
+            background: white;
+            border-radius: 4px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #005eb8;
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid #005eb8;
+            padding-bottom: 0.75rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #005eb8;
+            box-shadow: 0 0 0 3px rgba(0, 94, 184, 0.1);
+        }
+
+        input[type="radio"],
+        input[type="checkbox"] {
+            margin-right: 0.5rem;
+            cursor: pointer;
+        }
+
+        .radio-group,
+        .checkbox-group {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .radio-item,
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .radio-item label,
+        .checkbox-item label {
+            margin: 0;
+            font-weight: 400;
+            cursor: pointer;
+        }
+
+        .help-text {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.35rem;
+            font-style: italic;
+        }
+
+        .notice {
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid;
+        }
+
+        .notice-info {
+            background-color: #e7f3ff;
+            border-left-color: #005eb8;
+            color: #003d82;
+        }
+
+        .notice-warning {
+            background-color: #fef7e0;
+            border-left-color: #ffb81c;
+            color: #7d4d00;
+        }
+
+        .notice-success {
+            background-color: #e7f5e5;
+            border-left-color: #00a149;
+            color: #00501f;
+        }
+
+        .validation-error {
+            background-color: #fee2e2;
+            border-left-color: #dc2626;
+            color: #7f1d1d;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+        }
+
+        .validation-error strong {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .nested-section {
+            background-color: #f9fafb;
+            padding: 1.5rem;
+            border-radius: 4px;
+            margin-top: 1.5rem;
+            margin-left: 0.5rem;
+            border-left: 3px solid #ddd;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .payslip-check {
+            background-color: #f3f4f6;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-top: 1.5rem;
+        }
+
+        .payslip-check .radio-group {
+            margin-top: 0.75rem;
+        }
+
+        .readonly-field {
+            background-color: #f3f4f6;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-weight: 500;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .ev-car-section {
+            background-color: #f9fafb;
+            padding: 1.5rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+        }
+
+        .ev-car-section .grid-2 {
+            margin-top: 1rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 0.75rem 2rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background-color: #005eb8;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #004595;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background-color: #e0e7ff;
+            color: #1e1b4b;
+        }
+
+        .btn-secondary:hover {
+            background-color: #c7d2fe;
+        }
+
+        .results-card {
+            background: linear-gradient(135deg, #005eb8 0%, #004595 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 4px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .results-card .ani-label {
+            font-size: 0.95rem;
+            opacity: 0.95;
+            margin-bottom: 0.5rem;
+        }
+
+        .results-card .ani-value {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .results-breakdown {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+        }
+
+        .results-breakdown h3 {
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-label {
+            font-weight: 500;
+            color: #666;
+        }
+
+        .result-value {
+            font-weight: 600;
+            color: #005eb8;
+            font-family: 'Courier New', monospace;
+        }
+
+        .tfc-eligible {
+            background-color: #e7f5e5;
+            border: 1px solid #00a149;
+        }
+
+        .tfc-ineligible {
+            background-color: #fee2e2;
+            border: 1px solid #dc2626;
+        }
+
+        .planning-box {
+            background-color: #fef3c7;
+            border: 2px solid #ffb81c;
+            padding: 1.5rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+        }
+
+        .planning-box h3 {
+            color: #7d4d00;
+            margin-bottom: 1rem;
+        }
+
+        .planning-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+
+        .planning-table th,
+        .planning-table td {
+            text-align: left;
+            padding: 0.75rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .planning-table th {
+            background-color: #fff5e6;
+            font-weight: 600;
+            color: #7d4d00;
+        }
+
+        .collapsible {
+            background-color: #f3f4f6;
+            border: 1px solid #ddd;
+            padding: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            user-select: none;
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .collapsible:hover {
+            background-color: #e5e7eb;
+        }
+
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .collapsible-content.expanded {
+            max-height: 2000px;
+            transition: max-height 0.4s ease-in;
+        }
+
+        .collapsible-toggle {
+            font-weight: 600;
+            color: #005eb8;
+        }
+
+        .breakdown-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .breakdown-table th,
+        .breakdown-table td {
+            text-align: left;
+            padding: 0.75rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .breakdown-table th {
+            background-color: #f3f4f6;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .breakdown-table td:last-child {
+            text-align: right;
+            font-family: 'Courier New', monospace;
+        }
+
+        footer {
+            background-color: #f3f4f6;
+            color: #666;
+            text-align: center;
+            padding: 2rem 1rem;
+            font-size: 0.9rem;
+            border-top: 1px solid #ddd;
+            margin-top: 3rem;
+        }
+
+        .salary-preview {
+            background-color: #e7f3ff;
+            border: 1px solid #005eb8;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-top: 1rem;
+        }
+
+        .salary-preview h4 {
+            color: #005eb8;
+            margin-bottom: 0.75rem;
+        }
+
+        .salary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        .salary-item strong {
+            color: #333;
+        }
+
+        .salary-item .amount {
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            color: #005eb8;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>NHS Consultant ANI Calculator</h1>
+        <p>England · 2026/27 · Current consultant contract · 2015 NHS Pension Scheme</p>
+    </header>
+
+    <div class="container">
+        <!-- Beta Warning -->
+        <div class="section-card" style="background-color: #fee2e2; border: 3px solid #dc2626;">
+            <div style="text-align: center;">
+                <h2 style="color: #7f1d1d; margin-bottom: 0.5rem; font-size: 1.5rem;">⚠️ BETA VERSION</h2>
+                <p style="color: #7f1d1d; font-size: 1.1rem; font-weight: 600;">This calculator is in beta and not currently in use.</p>
+                <p style="color: #7f1d1d; font-size: 0.95rem; margin-top: 0.5rem;">This tool is still under development and testing. Do not rely on results for financial decisions until official release.</p>
+            </div>
+        </div>
+
+        <!-- Validation Errors -->
+        <div id="validationErrors" class="hidden"></div>
+
+        <!-- Section 1: Before You Start -->
+        <div class="section-card">
+            <div class="section-title">1. Before You Start</div>
+
+            <div class="notice notice-info">
+                <strong>What is ANI?</strong><br>
+                This calculator estimates Adjusted Net Income (ANI). It is designed for NHS consultants in England on the current consultant contract and the 2015 NHS Pension Scheme.
+            </div>
+
+            <div class="form-group">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="taxYearConfirm" checked>
+                    <label for="taxYearConfirm">I confirm that I am calculating my income for the current tax year, 2026/27.</label>
+                </div>
+            </div>
+
+            <div class="notice notice-warning">
+                <strong>Property income:</strong> If you have rental or property income, this calculator cannot assist with your full ANI calculation.
+            </div>
+        </div>
+
+        <!-- Section 2: Consultant Pay -->
+        <div class="section-card">
+            <div class="section-title">2. Consultant Pay</div>
+
+            <div class="form-group">
+                <label for="startDate">CCT / Consultant start date *</label>
+                <input type="date" id="startDate" required>
+                <div class="help-text">Used to determine the consultant pay point for 2026/27.</div>
+            </div>
+
+            <div class="form-group">
+                <label for="incrementForward">Increment date brought forward (months)</label>
+                <input type="number" id="incrementForward" min="0" value="0" step="1">
+                <div class="help-text">Enter the number of months by which your increment date was brought forward. Do not enter negative months.</div>
+            </div>
+
+            <div class="form-group">
+                <label for="totalPAs">Total contracted PAs</label>
+                <input type="number" id="totalPAs" min="0" max="20" value="10" step="0.05">
+                <div class="help-text">Enter in 0.05 PA increments. The first 10 PAs are pensionable. PAs above 10 are additional programmed activities and are non-pensionable.</div>
+            </div>
+
+            <div id="salaryPreview" class="hidden"></div>
+
+            <div id="payslipChecks" class="hidden payslip-check"></div>
+        </div>
+
+        <!-- Section 3: Electric Vehicle Salary Sacrifice -->
+        <div class="section-card">
+            <div class="section-title">3. Electric Vehicle Salary Sacrifice</div>
+
+            <div class="form-group">
+                <label>Do you have an electric vehicle through salary sacrifice?</label>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="evNo" name="evStatus" value="no" checked>
+                        <label for="evNo">No</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="evYes" name="evStatus" value="yes">
+                        <label for="evYes">Yes</label>
+                    </div>
+                </div>
+            </div>
+
+            <div id="evDetails" class="hidden">
+                <div class="form-group">
+                    <label>Number of EV salary-sacrifice cars</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="ev1" name="evCount" value="1" checked>
+                            <label for="ev1">1 car</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="ev2" name="evCount" value="2">
+                            <label for="ev2">2 cars</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="evCarsContainer"></div>
+
+                <div class="notice notice-info">
+                    The gross salary sacrifice reduces salary and pensionable salary in this calculator. The EV benefit-in-kind is added separately as taxable employment benefit.
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: On-call and Additional NHS Income -->
+        <div class="section-card">
+            <div class="section-title">4. On-call and Additional NHS Income</div>
+
+            <div class="form-group">
+                <label>On-call rota?</label>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="oncallNo" name="oncall" value="no">
+                        <label for="oncallNo">No</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="oncallYes" name="oncall" value="yes" checked>
+                        <label for="oncallYes">Yes</label>
+                    </div>
+                </div>
+            </div>
+
+            <div id="oncallDetails" class="nested-section">
+                <div class="form-group">
+                    <label for="oncallPercent">On-call supplement (%)</label>
+                    <input type="number" id="oncallPercent" value="3" step="0.1" min="0">
+                    <div class="help-text">Default 3% of basic salary; pensionable.</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Additional NHS WLI / locum income?</label>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="wliNo" name="wli" value="no" checked>
+                        <label for="wliNo">No</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="wliYes" name="wli" value="yes">
+                        <label for="wliYes">Yes</label>
+                    </div>
+                </div>
+            </div>
+
+            <div id="wliDetails" class="hidden nested-section">
+                <div class="form-group">
+                    <label for="wliAmount">Annual WLI / locum income</label>
+                    <input type="number" id="wliAmount" value="0" min="0" step="0.01">
+                    <div class="help-text">This is additional income only and is not included in the pensionable salary calculation.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 5: NHS Pension -->
+        <div class="section-card">
+            <div class="section-title">5. NHS Pension</div>
+
+            <div class="form-group">
+                <label>Are you a member of the NHS Pension Scheme?</label>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="pensionYes" name="pensionMember" value="yes" checked>
+                        <label for="pensionYes">Yes</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="pensionNo" name="pensionMember" value="no">
+                        <label for="pensionNo">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <div id="pensionDetails" class="nested-section">
+                <div class="form-group">
+                    <label for="estimatedPension" class="readonly-field" id="estimatedPensionLabel">Estimated monthly NHS Pension contribution: £0.00</label>
+                </div>
+
+                <div class="form-group">
+                    <label>Does this approximately match the NHS Pension contribution shown on your payslip?</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="pensionMatchYes" name="pensionMatch" value="yes" checked>
+                            <label for="pensionMatchYes">Yes</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="pensionMatchNo" name="pensionMatch" value="no">
+                            <label for="pensionMatchNo">No</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="pensionOverride" class="hidden">
+                    <div class="form-group">
+                        <label for="actualPension">Actual monthly NHS Pension contribution *</label>
+                        <input type="number" id="actualPension" min="0" step="0.01">
+                        <div class="help-text">Enter the actual monthly NHS Pension deduction from your payslip. This will replace the calculator's estimate.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 6: Other Taxable Income -->
+        <div class="section-card">
+            <div class="section-title">6. Other Taxable Income</div>
+
+            <div class="form-group">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="otherIncome">
+                    <label for="otherIncome">I have dividends and/or savings interest to include</label>
+                </div>
+            </div>
+
+            <div id="otherIncomeDetails" class="hidden nested-section">
+                <div class="form-group">
+                    <label for="dividends">Annual dividends</label>
+                    <input type="number" id="dividends" value="0" min="0" step="0.01">
+                    <div class="help-text">Do not include dividends in an ISA. The 2026/27 Dividend Allowance is £500, but this affects tax rather than ANI.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="savingsInterest">Annual savings interest outside ISAs</label>
+                    <input type="number" id="savingsInterest" value="0" min="0" step="0.01">
+                    <div class="help-text">Do not include ISA interest. Full taxable interest is included in ANI; the Personal Savings Allowance affects tax, not ANI.</div>
+                </div>
+
+                <div class="notice notice-warning">
+                    <strong>Property income:</strong> If you have rental or property income, this calculator cannot assist with your full ANI calculation.
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 7: SIPP and Gift Aid -->
+        <div class="section-card">
+            <div class="section-title">7. SIPP and Gift Aid</div>
+
+            <div class="form-group">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="sippCheck">
+                    <label for="sippCheck">Include SIPP contributions</label>
+                </div>
+            </div>
+
+            <div id="sippDetails" class="hidden nested-section">
+                <div class="form-group">
+                    <label for="sippAmount">SIPP contribution actually paid (net)</label>
+                    <input type="number" id="sippAmount" value="0" min="0" step="0.01">
+                    <div class="help-text">Relief-at-source contribution. The calculator grosses this up by 25% for ANI purposes.</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="giftAidCheck">
+                    <label for="giftAidCheck">Include Gift Aid</label>
+                </div>
+            </div>
+
+            <div id="giftAidDetails" class="hidden nested-section">
+                <div class="form-group">
+                    <label for="giftAidAmount">Gift Aid donation actually paid</label>
+                    <input type="number" id="giftAidAmount" value="0" min="0" step="0.01">
+                    <div class="help-text">The calculator grosses this up by 25% for ANI purposes.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 8: Professional Fees -->
+        <div class="section-card">
+            <div class="section-title">8. Professional Fees</div>
+
+            <div class="form-group">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="feesCheck">
+                    <label for="feesCheck">Include eligible professional subscriptions/fees</label>
+                </div>
+            </div>
+
+            <div id="feesDetails" class="hidden nested-section">
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="gmcFee">GMC, annual</label>
+                        <input type="number" id="gmcFee" value="481" min="0" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label for="rcaFee">RCoA, annual</label>
+                        <input type="number" id="rcaFee" value="599" min="0" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label for="mpsFee">MPS, annual</label>
+                        <input type="number" id="mpsFee" value="549" min="0" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label for="bmaFee">BMA, monthly</label>
+                        <input type="number" id="bmaFee" value="46" min="0" step="0.01">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 9: Results -->
+        <div class="section-card">
+            <div class="button-group">
+                <button class="btn-primary" onclick="calculateANI()">Calculate ANI</button>
+            </div>
+
+            <div id="staleResultsWarning" class="hidden notice notice-warning" style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
+                <strong>Unsaved changes detected.</strong> You have made changes to your inputs. Press the "Calculate ANI" button again to update your results.
+            </div>
+
+            <div id="results" class="hidden"></div>
+
+            <div class="collapsible" id="breakdownCollapsible">
+                <span class="collapsible-toggle">Show calculation breakdown</span>
+                <span>▼</span>
+            </div>
+            <div class="collapsible-content" id="breakdownContent">
+                <table class="breakdown-table" id="breakdownTable"></table>
+            </div>
+
+            <div class="collapsible" id="assumptionsCollapsible">
+                <span class="collapsible-toggle">Assumptions & data</span>
+                <span>▼</span>
+            </div>
+            <div class="collapsible-content" id="assumptionsContent">
+                <div style="padding: 1rem; background-color: white;">
+                    <ul style="margin-left: 1.5rem; line-height: 1.8;">
+                        <li><strong>Tax year:</strong> 2026/27 only.</li>
+                        <li><strong>Consultant pay source:</strong> 2026/27 NHS Employers Pay and Conditions Circular (M&D) 1/2026 R2.</li>
+                        <li><strong>Programmed activities:</strong> One PA equals one tenth of nodal-point basic salary. First 10 PAs are pensionable; additional PAs are non-pensionable.</li>
+                        <li><strong>Pension contributions:</strong> Rates and payslip override are estimates.</li>
+                        <li><strong>EV benefit-in-kind:</strong> Calculated at 4% for zero-emission cars in 2026/27. P11D figures are estimates and should be checked where precision matters.</li>
+                        <li><strong>ANI treatment:</strong> Pension contributions, EV BIK, professional fees, SIPP and Gift Aid are treated as specified.</li>
+                        <li><strong>Other income:</strong> Dividends and non-ISA interest are included in ANI; ISA income is excluded.</li>
+                        <li><strong>Professional fee defaults:</strong> GMC £481, RCoA £599, MPS £549 and BMA £46/month.</li>
+                        <li><strong>Pro-rata salary:</strong> If an increment date falls within the 2026/27 tax year (between 1 April 2026 and 31 March 2027), salary, on-call supplement, and pensionable pay are split pro-rata across the two pay points.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>Disclaimer:</strong> This is an estimation tool, not regulated financial/tax advice. Check your payslip and HMRC/NHSBSA records where exact figures matter.</p>
+    </footer>
+
+    <script>
+        // Track whether results are stale (out of date)
+        let resultsAreStale = false;
+
+        // Consultant pay table for 2026/27
+        const consultantPayTable = {
+            0: 113565,
+            3: 120249,
+            4: 123672,
+            8: 135645,
+            14: 150569
+        };
+
+        // Pension contribution rates for 2026/27
+        const pensionRates = [
+            { upTo: 13259, rate: 0.052 },
+            { upTo: 28854, rate: 0.065 },
+            { upTo: 35155, rate: 0.083 },
+            { upTo: 52778, rate: 0.098 },
+            { upTo: 67668, rate: 0.107 },
+            { upTo: Infinity, rate: 0.125 }
+        ];
+
+        // EV data
+        const evData = {
+            "Tesla Model Y": 50000,
+            "Tesla Model 3": 45000,
+            "BMW i4": 55000,
+            "BMW iX": 75000,
+            "BMW i5": 70000,
+            "Mercedes-Benz EQE": 75000,
+            "Mercedes-Benz EQA": 50000,
+            "Mercedes-Benz EQB": 55000,
+            "Audi Q4 e-tron": 50000,
+            "Audi Q6 e-tron": 65000,
+            "Audi Q8 e-tron": 80000,
+            "Polestar 2": 50000,
+            "Polestar 3": 70000,
+            "Polestar 4": 60000,
+            "Volkswagen ID.4": 45000,
+            "Volkswagen ID.7": 55000,
+            "Volkswagen ID. Buzz": 60000,
+            "Hyundai IONIQ 5": 50000,
+            "Hyundai IONIQ 6": 50000,
+            "Kia EV6": 50000,
+            "Kia EV9": 70000,
+            "Skoda Enyaq": 45000,
+            "Ford Mustang Mach-E": 50000,
+            "Porsche Taycan": 100000,
+            "Jaguar I-PACE": 70000,
+            "Nissan Ariya": 45000,
+            "Renault Scenic E-Tech": 40000,
+            "Vauxhall Grandland Electric": 40000
+        };
+
+        // Utility functions
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('en-GB', {
+                style: 'currency',
+                currency: 'GBP',
+                minimumFractionDigits: 2
+            }).format(value);
+        }
+
+        function roundToNearest(value, nearest) {
+            return Math.round(value / nearest) * nearest;
+        }
+
+        function getConsultantPayInfo(startDate, incrementForward) {
+            // Returns an object with:
+            // - yearAtApril2026: consultant year on 1 April 2026
+            // - salaryAtApril2026: salary from 1 April 2026
+            // - incrementDuringYear: whether an increment occurs in 2026/27
+            // - incrementDate: date of increment (if it occurs during year)
+            // - salaryAfterIncrement: salary after increment
+            // - monthsBeforeIncrement: months from 1 April to increment date
+            // - monthsAfterIncrement: months from increment date to 31 March 2027
+            
+            const start = new Date(startDate);
+            const aprilFirst2026 = new Date('2026-04-01');
+            const marchThirtyFirst2027 = new Date('2027-03-31');
+            
+            // Calculate elapsed months to 1 April 2026
+            let elapsedMonths = 0;
+            let current = new Date(start);
+            while (current < aprilFirst2026) {
+                current.setMonth(current.getMonth() + 1);
+                if (current <= aprilFirst2026) {
+                    elapsedMonths++;
+                }
+            }
+            
+            // Effective service includes increment months brought forward
+            const effectiveMonthsAtApril = elapsedMonths + incrementForward;
+            
+            // Function to get pay point from effective months
+            const getPayPointFromMonths = (months) => {
+                const years = months / 12;
+                if (years < 3) return 0;
+                if (years < 4) return 3;
+                if (years < 8) return 4;
+                if (years < 14) return 8;
+                return 14;
+            };
+            
+            const yearAtApril2026 = getPayPointFromMonths(effectiveMonthsAtApril);
+            const salaryAtApril2026 = consultantPayTable[yearAtApril2026];
+            
+            // Calculate when the next increment occurs (12 months after effective start)
+            // Effective start = actual start + increment months brought forward accelerated
+            const effectiveStart = new Date(start);
+            effectiveStart.setMonth(effectiveStart.getMonth() + incrementForward);
+            
+            // Next increment is 12 months after effective start, then 12 months after that, etc.
+            const yearsCompletedEffectively = Math.floor(effectiveMonthsAtApril / 12);
+            const nextIncrementAfterApril = yearsCompletedEffectively + 1;
+            const nextIncrementMonthsFromActualStart = nextIncrementAfterApril * 12 - incrementForward;
+            
+            let incrementDate = new Date(start);
+            incrementDate.setMonth(incrementDate.getMonth() + nextIncrementMonthsFromActualStart);
+            
+            // Check if increment falls within 2026/27 tax year
+            let incrementDuringYear = false;
+            let salaryAfterIncrement = salaryAtApril2026;
+            let monthsBeforeIncrement = 12;
+            let monthsAfterIncrement = 0;
+            
+            if (incrementDate > aprilFirst2026 && incrementDate <= marchThirtyFirst2027) {
+                incrementDuringYear = true;
+                
+                // Calculate months between 1 April and increment date
+                let tempDate = new Date(aprilFirst2026);
+                monthsBeforeIncrement = 0;
+                while (tempDate < incrementDate) {
+                    tempDate.setMonth(tempDate.getMonth() + 1);
+                    if (tempDate <= incrementDate) {
+                        monthsBeforeIncrement++;
+                    }
+                }
+                monthsAfterIncrement = 12 - monthsBeforeIncrement;
+                
+                // Salary after increment
+                const yearsAfterIncrement = (effectiveMonthsAtApril + monthsBeforeIncrement) / 12;
+                const payPointAfter = getPayPointFromMonths(Math.ceil(yearsAfterIncrement * 12));
+                salaryAfterIncrement = consultantPayTable[payPointAfter];
+            }
+            
+            return {
+                yearAtApril2026: yearAtApril2026,
+                salaryAtApril2026: salaryAtApril2026,
+                incrementDuringYear: incrementDuringYear,
+                incrementDate: incrementDate,
+                salaryAfterIncrement: salaryAfterIncrement,
+                monthsBeforeIncrement: monthsBeforeIncrement,
+                monthsAfterIncrement: monthsAfterIncrement
+            };
+        }
+        
+        function getConsultantYears(startDate, incrementForward) {
+            // For backward compatibility - returns year at 1 April 2026
+            return getConsultantPayInfo(startDate, incrementForward).yearAtApril2026;
+        }
+
+        function getConsultantPayPoint(years) {
+            if (years >= 14) return consultantPayTable[14];
+            if (years >= 8) return consultantPayTable[8];
+            if (years >= 4) return consultantPayTable[4];
+            if (years >= 3) return consultantPayTable[3];
+            return consultantPayTable[0];
+        }
+
+        function getPensionRate(pensionablePay) {
+            for (let tier of pensionRates) {
+                if (pensionablePay <= tier.upTo) {
+                    return tier.rate;
+                }
+            }
+            return 0.125;
+        }
+
+        function markResultsAsStale() {
+            if (resultsAreStale) return; // Already stale, no need to update
+            
+            resultsAreStale = true;
+            const staleWarning = document.getElementById('staleResultsWarning');
+            if (staleWarning) {
+                staleWarning.classList.remove('hidden');
+            }
+        }
+
+        function clearStaleWarning() {
+            resultsAreStale = false;
+            const staleWarning = document.getElementById('staleResultsWarning');
+            if (staleWarning) {
+                staleWarning.classList.add('hidden');
+            }
+        }
+
+        function validateForm() {
+            const errors = [];
+            
+            if (!document.getElementById('taxYearConfirm').checked) {
+                errors.push('Tax year confirmation not checked');
+            }
+            
+            if (!document.getElementById('startDate').value) {
+                errors.push('Consultant start date is required');
+            }
+            
+            if (document.getElementById('evYes').checked) {
+                const evCount = parseInt(document.querySelector('input[name="evCount"]:checked').value);
+                for (let i = 1; i <= evCount; i++) {
+                    const sacrifice = parseFloat(document.getElementById(`evSacrifice${i}`).value) || 0;
+                    const p11d = parseFloat(document.getElementById(`evP11D${i}`).value) || 0;
+                    
+                    if (sacrifice <= 0) {
+                        errors.push(`Car ${i}: Monthly gross salary sacrifice must be greater than zero`);
+                    }
+                    if (p11d <= 0) {
+                        errors.push(`Car ${i}: P11D value must be greater than zero`);
+                    }
+                }
+            }
+            
+            if (document.getElementById('pensionMatchNo').checked) {
+                const actualPension = parseFloat(document.getElementById('actualPension').value);
+                if (!actualPension || actualPension <= 0) {
+                    errors.push('Actual monthly NHS Pension contribution is required');
+                }
+            }
+            
+            return errors;
+        }
+
+        function displayValidationErrors(errors) {
+            const container = document.getElementById('validationErrors');
+            if (errors.length === 0) {
+                container.classList.add('hidden');
+                return;
+            }
+            
+            container.classList.remove('hidden');
+            container.innerHTML = '<div class="validation-error"><strong>Please fix the following:</strong>' + 
+                errors.map(e => `<div>• ${e}</div>`).join('') + '</div>';
+        }
+
+        function calculateANI() {
+            clearStaleWarning();
+            const errors = validateForm();
+            if (errors.length > 0) {
+                displayValidationErrors(errors);
+                return;
+            }
+            
+            displayValidationErrors([]);
+            
+            // Get inputs
+            const startDate = document.getElementById('startDate').value;
+            const incrementForward = parseInt(document.getElementById('incrementForward').value) || 0;
+            const totalPAs = parseFloat(document.getElementById('totalPAs').value) || 10;
+            
+            // Calculate consultant pay with pro-rata if increment falls in 2026/27
+            const payInfo = getConsultantPayInfo(startDate, incrementForward);
+            const years = payInfo.yearAtApril2026;
+            const basicSalary = payInfo.salaryAtApril2026;
+            const paValue = basicSalary / 10;
+            
+            // Contracted PAs (max 10)
+            const contractedPAs = Math.min(totalPAs, 10);
+            const additionalPAs = Math.max(0, totalPAs - 10);
+            
+            let contractedPAIncome = contractedPAs * paValue;
+            let additionalPAIncome = additionalPAs * paValue;
+            
+            // Handle pro-rata if increment occurs during 2026/27
+            if (payInfo.incrementDuringYear) {
+                const paValueAfter = payInfo.salaryAfterIncrement / 10;
+                const monthsBeforeInc = payInfo.monthsBeforeIncrement;
+                const monthsAfterInc = payInfo.monthsAfterIncrement;
+                
+                // Pro-rata contracted PA income
+                contractedPAIncome = (contractedPAs * paValue * monthsBeforeInc / 12) + 
+                                    (contractedPAs * paValueAfter * monthsAfterInc / 12);
+                
+                // Pro-rata additional PA income
+                additionalPAIncome = (additionalPAs * paValue * monthsBeforeInc / 12) + 
+                                    (additionalPAs * paValueAfter * monthsAfterInc / 12);
+            }
+            
+            // EV sacrifice
+            let totalEvSacrifice = 0;
+            let totalEvBik = 0;
+            
+            if (document.getElementById('evYes').checked) {
+                const evCount = parseInt(document.querySelector('input[name="evCount"]:checked').value);
+                for (let i = 1; i <= evCount; i++) {
+                    const sacrifice = parseFloat(document.getElementById(`evSacrifice${i}`).value) || 0;
+                    const p11d = parseFloat(document.getElementById(`evP11D${i}`).value) || 0;
+                    
+                    const roundedP11D = roundToNearest(p11d, 2500);
+                    const bik = roundedP11D * 0.04;
+                    
+                    totalEvSacrifice += sacrifice * 12;
+                    totalEvBik += bik;
+                }
+            }
+            
+            // On-call supplement
+            let oncallSupplement = 0;
+            if (document.getElementById('oncallYes').checked) {
+                const oncallPercent = parseFloat(document.getElementById('oncallPercent').value) || 0;
+                
+                if (payInfo.incrementDuringYear) {
+                    // Pro-rata on-call supplement
+                    const oncallAfter = payInfo.salaryAfterIncrement * (oncallPercent / 100);
+                    const monthsBeforeInc = payInfo.monthsBeforeIncrement;
+                    const monthsAfterInc = payInfo.monthsAfterIncrement;
+                    oncallSupplement = (basicSalary * (oncallPercent / 100) * monthsBeforeInc / 12) + 
+                                      (oncallAfter * monthsAfterInc / 12);
+                } else {
+                    oncallSupplement = basicSalary * (oncallPercent / 100);
+                }
+            }
+            
+            // WLI/locum
+            const wliIncome = document.getElementById('wliYes').checked ?
+                parseFloat(document.getElementById('wliAmount').value) || 0 : 0;
+            
+            // Pensionable pay
+            const pensionablePay = contractedPAIncome + oncallSupplement - totalEvSacrifice;
+            
+            // Pension contribution
+            let annualPensionContrib = 0;
+            if (document.getElementById('pensionYes').checked) {
+                if (document.getElementById('pensionMatchNo').checked) {
+                    const actualMonthly = parseFloat(document.getElementById('actualPension').value) || 0;
+                    annualPensionContrib = actualMonthly * 12;
+                } else {
+                    const rate = getPensionRate(pensionablePay);
+                    annualPensionContrib = pensionablePay * rate;
+                }
+            }
+            
+            // Professional fees
+            let totalFees = 0;
+            if (document.getElementById('feesCheck').checked) {
+                const gmc = parseFloat(document.getElementById('gmcFee').value) || 0;
+                const rca = parseFloat(document.getElementById('rcaFee').value) || 0;
+                const mps = parseFloat(document.getElementById('mpsFee').value) || 0;
+                const bma = parseFloat(document.getElementById('bmaFee').value) || 0;
+                
+                totalFees = gmc + rca + mps + (bma * 12);
+            }
+            
+            // Other income
+            const dividends = document.getElementById('otherIncome').checked ?
+                parseFloat(document.getElementById('dividends').value) || 0 : 0;
+            const savingsInterest = document.getElementById('otherIncome').checked ?
+                parseFloat(document.getElementById('savingsInterest').value) || 0 : 0;
+            
+            // SIPP and Gift Aid
+            const sippGrossedUp = document.getElementById('sippCheck').checked ?
+                (parseFloat(document.getElementById('sippAmount').value) || 0) * 1.25 : 0;
+            const giftAidGrossedUp = document.getElementById('giftAidCheck').checked ?
+                (parseFloat(document.getElementById('giftAidAmount').value) || 0) * 1.25 : 0;
+            
+            // Employment income
+            const employmentIncome = contractedPAIncome + additionalPAIncome + oncallSupplement +
+                wliIncome + totalEvBik - totalEvSacrifice - annualPensionContrib - totalFees;
+            
+            // ANI
+            let ani = employmentIncome + dividends + savingsInterest - sippGrossedUp - giftAidGrossedUp;
+            ani = Math.max(0, ani);
+            
+            // Display results
+            displayResults(ani, basicSalary, years, contractedPAIncome, additionalPAIncome,
+                pensionablePay, annualPensionContrib, totalEvSacrifice, totalEvBik,
+                wliIncome, oncallSupplement, totalFees, dividends, savingsInterest,
+                sippGrossedUp, giftAidGrossedUp, employmentIncome, payInfo);
+        }
+
+        function displayResults(ani, basicSalary, years, contractedPA, additionalPA, pensionablePay,
+            annualPension, evSacrifice, evBik, wli, oncall, fees, dividends, interest,
+            sippGrossed, giftAidGrossed, empIncome, payInfo) {
+            
+            const resultsDiv = document.getElementById('results');
+            const monthlyPension = annualPension / 12;
+            const tfcEligible = ani <= 100000;
+            const amountFromThreshold = tfcEligible ? 100000 - ani : ani - 100000;
+            
+            let html = `
+                <div class="results-card">
+                    <div class="ani-label">Adjusted Net Income (ANI)</div>
+                    <div class="ani-value">${formatCurrency(ani)}</div>
+                </div>
+            `;
+            
+            if (payInfo && payInfo.incrementDuringYear) {
+                const incDate = payInfo.incrementDate;
+                const incDateStr = incDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+                html += `
+                    <div class="notice notice-warning">
+                        <strong>Pro-rata salary adjustment:</strong> Your increment occurs on ${incDateStr} during the 2026/27 tax year. Your salary, on-call supplement and pensionable pay have been calculated pro-rata across both pay points.
+                    </div>
+                `;
+            }
+
+            html += `
+                <div class="results-breakdown">
+                    <h3>Annual breakdown</h3>
+                    <div class="result-item">
+                        <span class="result-label">Nodal point (Year ${years})</span>
+                        <span class="result-value">${formatCurrency(basicSalary)}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Contracted PA income (1–10 PAs)</span>
+                        <span class="result-value">${formatCurrency(contractedPA)}</span>
+                    </div>
+            `;
+            
+            if (additionalPA > 0) {
+                html += `
+                    <div class="result-item">
+                        <span class="result-label">Additional PA income (11+ PAs)</span>
+                        <span class="result-value">${formatCurrency(additionalPA)}</span>
+                    </div>
+                `;
+            }
+            
+            html += `
+                    <div class="result-item">
+                        <span class="result-label">Pensionable pay</span>
+                        <span class="result-value">${formatCurrency(pensionablePay)}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Monthly NHS pension contribution</span>
+                        <span class="result-value">${formatCurrency(monthlyPension)}</span>
+                    </div>
+                </div>
+
+                <div class="results-breakdown ${tfcEligible ? 'tfc-eligible' : 'tfc-ineligible'}">
+                    <h3>Tax-Free Childcare (TFC) eligibility</h3>
+                    <div class="result-item">
+                        <span class="result-label">TFC eligibility (£100,000 test)</span>
+                        <span class="result-value">${tfcEligible ? 'Potentially eligible' : 'Not eligible'}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">${tfcEligible ? 'Below' : 'Above'} £100,000 by</span>
+                        <span class="result-value">${formatCurrency(amountFromThreshold)}</span>
+                    </div>
+                </div>
+            `;
+            
+            if (!tfcEligible) {
+                // Planning box
+                const reductionNeeded = ani - 100000;
+                const sippToPay = reductionNeeded / 1.25;
+                
+                html += `
+                    <div class="planning-box">
+                        <h3>Reduce ANI below £100,000</h3>
+                        <p><strong>Amount ANI must reduce by:</strong> ${formatCurrency(reductionNeeded)}</p>
+                        <table class="planning-table">
+                            <thead>
+                                <tr>
+                                    <th>Method</th>
+                                    <th>Amount actually paid</th>
+                                    <th>Gross ANI reduction</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>SIPP (relief at source)</td>
+                                    <td>${formatCurrency(sippToPay)}</td>
+                                    <td>${formatCurrency(reductionNeeded)}</td>
+                                </tr>
+                                <tr>
+                                    <td>Gift Aid</td>
+                                    <td>${formatCurrency(sippToPay)}</td>
+                                    <td>${formatCurrency(reductionNeeded)}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p style="margin-top: 1rem; font-size: 0.9rem;">The reduction can be split between SIPP and Gift Aid.</p>
+                        <p style="margin-top: 0.5rem; font-size: 0.9rem;"><strong>Timing note:</strong> SIPP contributions cannot be carried back to reduce a previous tax year. Gift Aid may be carried back where HMRC conditions and deadlines are met. This calculator itself only calculates 2026/27.</p>
+                    </div>
+                `;
+            } else {
+                html += `
+                    <div class="planning-box" style="background-color: #e7f5e5; border-color: #00a149;">
+                        <h3 style="color: #00501f;">No reduction plan needed</h3>
+                        <p>Your ANI is at or below £100,000, so no planning is required to maintain Tax-Free Childcare eligibility.</p>
+                    </div>
+                `;
+            }
+            
+            resultsDiv.innerHTML = html;
+            resultsDiv.classList.remove('hidden');
+            
+            // Update breakdown table
+            const breakdownTable = document.getElementById('breakdownTable');
+            breakdownTable.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th style="text-align: right;">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Nodal point basic salary (Year ${years})</td>
+                        <td>${formatCurrency(basicSalary)}</td>
+                    </tr>
+                    <tr>
+                        <td>Marginal value per PA</td>
+                        <td>${formatCurrency(basicSalary / 10)}</td>
+                    </tr>
+                    <tr>
+                        <td>Contracted PAs (1–10)</td>
+                        <td>${formatCurrency(contractedPA)}</td>
+                    </tr>
+                    ${additionalPA > 0 ? `<tr>
+                        <td>Additional programmed activities</td>
+                        <td>${formatCurrency(additionalPA)}</td>
+                    </tr>` : ''}
+                    ${oncall > 0 ? `<tr>
+                        <td>On-call supplement</td>
+                        <td>${formatCurrency(oncall)}</td>
+                    </tr>` : ''}
+                    ${wli > 0 ? `<tr>
+                        <td>WLI / locum income</td>
+                        <td>${formatCurrency(wli)}</td>
+                    </tr>` : ''}
+                    ${evSacrifice > 0 ? `<tr>
+                        <td>EV salary sacrifice (annual)</td>
+                        <td>−${formatCurrency(evSacrifice)}</td>
+                    </tr>` : ''}
+                    ${evBik > 0 ? `<tr>
+                        <td>EV benefit-in-kind</td>
+                        <td>${formatCurrency(evBik)}</td>
+                    </tr>` : ''}
+                    <tr>
+                        <td>Pensionable pay</td>
+                        <td>${formatCurrency(pensionablePay)}</td>
+                    </tr>
+                    ${annualPension > 0 ? `<tr>
+                        <td>NHS pension contribution (annual)</td>
+                        <td>−${formatCurrency(annualPension)}</td>
+                    </tr>` : ''}
+                    ${fees > 0 ? `<tr>
+                        <td>Professional fees</td>
+                        <td>−${formatCurrency(fees)}</td>
+                    </tr>` : ''}
+                    ${dividends > 0 ? `<tr>
+                        <td>Dividends</td>
+                        <td>${formatCurrency(dividends)}</td>
+                    </tr>` : ''}
+                    ${interest > 0 ? `<tr>
+                        <td>Savings interest (outside ISA)</td>
+                        <td>${formatCurrency(interest)}</td>
+                    </tr>` : ''}
+                    ${sippGrossed > 0 ? `<tr>
+                        <td>SIPP gross ANI reduction</td>
+                        <td>−${formatCurrency(sippGrossed)}</td>
+                    </tr>` : ''}
+                    ${giftAidGrossed > 0 ? `<tr>
+                        <td>Gift Aid gross ANI reduction</td>
+                        <td>−${formatCurrency(giftAidGrossed)}</td>
+                    </tr>` : ''}
+                    <tr style="border-top: 2px solid #333;">
+                        <td><strong>Adjusted Net Income (ANI)</strong></td>
+                        <td><strong>${formatCurrency(ani)}</strong></td>
+                    </tr>
+                </tbody>
+            `;
+        }
+
+        function updateSalaryPreview() {
+            const startDate = document.getElementById('startDate').value;
+            if (!startDate) {
+                document.getElementById('salaryPreview').classList.add('hidden');
+                document.getElementById('payslipChecks').classList.add('hidden');
+                // Reset pension contribution display if no start date
+                document.getElementById('estimatedPensionLabel').textContent = 
+                    `Estimated monthly NHS Pension contribution: £0.00`;
+                return;
+            }
+            
+            const increment = parseInt(document.getElementById('incrementForward').value) || 0;
+            const totalPAs = parseFloat(document.getElementById('totalPAs').value) || 10;
+            
+            const payInfo = getConsultantPayInfo(startDate, increment);
+            const years = payInfo.yearAtApril2026;
+            const basicSalary = payInfo.salaryAtApril2026;
+            const paValue = basicSalary / 10;
+            
+            const contractedPAs = Math.min(totalPAs, 10);
+            const additionalPAs = Math.max(0, totalPAs - 10);
+            
+            let contractedIncome = contractedPAs * paValue;
+            let additionalIncome = additionalPAs * paValue;
+            
+            // Handle pro-rata if increment during year
+            if (payInfo.incrementDuringYear) {
+                const paValueAfter = payInfo.salaryAfterIncrement / 10;
+                const monthsBeforeInc = payInfo.monthsBeforeIncrement;
+                const monthsAfterInc = payInfo.monthsAfterIncrement;
+                
+                contractedIncome = (contractedPAs * paValue * monthsBeforeInc / 12) + 
+                                  (contractedPAs * paValueAfter * monthsAfterInc / 12);
+                additionalIncome = (additionalPAs * paValue * monthsBeforeInc / 12) + 
+                                  (additionalPAs * paValueAfter * monthsAfterInc / 12);
+            }
+            
+            const monthlyBasic = basicSalary / 12;
+            const monthlyAdditional = additionalIncome / 12;
+            
+            let preview = `
+                <div class="salary-preview">
+                    <h4>Salary Preview</h4>
+                    <div class="salary-item">
+                        <strong>Consultant year (as at 1 April 2026):</strong>
+                        <span class="amount">Year ${years}</span>
+                    </div>
+                    <div class="salary-item">
+                        <strong>Annual basic salary (nodal point):</strong>
+                        <span class="amount">${formatCurrency(basicSalary)}</span>
+                    </div>
+                    <div class="salary-item">
+                        <strong>Monthly basic salary:</strong>
+                        <span class="amount">${formatCurrency(monthlyBasic)}</span>
+                    </div>
+            `;
+            
+            if (payInfo.incrementDuringYear) {
+                const incDate = payInfo.incrementDate;
+                const incDateStr = incDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+                const salaryAfter = payInfo.salaryAfterIncrement;
+                preview += `
+                    <div class="salary-item" style="background-color: #fef3c7; padding: 0.5rem; border-radius: 3px; margin-top: 0.5rem;">
+                        <strong style="color: #7d4d00;">Increment on ${incDateStr}:</strong>
+                        <span class="amount" style="color: #7d4d00;">${formatCurrency(salaryAfter)}</span>
+                    </div>
+                `;
+            }
+            
+            if (additionalIncome > 0) {
+                preview += `
+                    <div class="salary-item">
+                        <strong>Annual additional PA income:</strong>
+                        <span class="amount">${formatCurrency(additionalIncome)}</span>
+                    </div>
+                    <div class="salary-item">
+                        <strong>Monthly additional PA income:</strong>
+                        <span class="amount">${formatCurrency(monthlyAdditional)}</span>
+                    </div>
+                `;
+            }
+            
+            preview += `</div>`;
+            
+            document.getElementById('salaryPreview').innerHTML = preview;
+            document.getElementById('salaryPreview').classList.remove('hidden');
+            
+            // Update payslip checks
+            let payslipHtml = `
+                <h4>Payslip checks</h4>
+                <div class="form-group">
+                    <label class="readonly-field">Expected monthly basic salary: ${formatCurrency(monthlyBasic)}</label>
+                    <div class="help-text">Compare this with the monthly amount shown as basic salary on your payslip.</div>
+                </div>
+                <div class="form-group">
+                    <label>Does this match your payslip?</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" name="basicMatch" value="yes" checked>
+                            <label>Yes, approximately matches</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" name="basicMatch" value="no">
+                            <label>No</label>
+                        </div>
+                    </div>
+                </div>
+                <div id="basicMismatch" class="hidden notice notice-warning">
+                    The calculated basic salary does not appear to match your payslip. Please check your consultant start date, increment adjustment and contracted PAs before relying on the result. You can continue.
+                </div>
+            `;
+            
+            if (additionalIncome > 0) {
+                payslipHtml += `
+                    <div class="form-group" style="margin-top: 1.5rem;">
+                        <label class="readonly-field">Expected monthly additional PA income: ${formatCurrency(monthlyAdditional)}</label>
+                        <div class="help-text">Compare this with the monthly amount shown as additional programmed activities on your payslip.</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Does this match your payslip?</label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" name="paMatch" value="yes" checked>
+                                <label>Yes, approximately matches</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" name="paMatch" value="no">
+                                <label>No</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="paMismatch" class="hidden notice notice-warning">
+                        The calculated additional PA income does not appear to match your payslip. Please check the number of PAs and your pay point before relying on the result. You can continue.
+                    </div>
+                `;
+            }
+            
+            document.getElementById('payslipChecks').innerHTML = payslipHtml;
+            document.getElementById('payslipChecks').classList.remove('hidden');
+            
+            // Update pension contribution display whenever salary preview updates
+            updatePensionContribution();
+        }
+
+        function updateEVCars() {
+            const count = parseInt(document.querySelector('input[name="evCount"]:checked').value) || 1;
+            const container = document.getElementById('evCarsContainer');
+            container.innerHTML = '';
+            
+            for (let i = 1; i <= count; i++) {
+                container.innerHTML += `
+                    <div class="ev-car-section">
+                        <h4>Car ${i}</h4>
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label for="evSacrifice${i}">Monthly gross salary sacrifice *</label>
+                                <input type="number" id="evSacrifice${i}" min="0" step="0.01" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="evCar${i}">Car make/model</label>
+                                <input type="text" id="evCar${i}" list="carList">
+                                <datalist id="carList">
+                                    ${Object.keys(evData).map(car => `<option value="${car}">`).join('')}
+                                </datalist>
+                            </div>
+                            <div class="form-group">
+                                <label for="evP11D${i}">Approximate P11D value *</label>
+                                <input type="number" id="evP11D${i}" min="0" step="100" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="evBik${i}" class="readonly-field" id="evBikLabel${i}">Estimated EV BIK: £0.00</label>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Add event listeners
+            for (let i = 1; i <= count; i++) {
+                document.getElementById(`evCar${i}`).addEventListener('change', (e) => {
+                    if (evData[e.target.value]) {
+                        const p11d = evData[e.target.value];
+                        document.getElementById(`evP11D${i}`).value = p11d;
+                        updateEVBik(i);
+                    }
+                });
+                
+                document.getElementById(`evP11D${i}`).addEventListener('input', () => updateEVBik(i));
+            }
+        }
+
+        function updateEVBik(carNum) {
+            const p11d = parseFloat(document.getElementById(`evP11D${carNum}`).value) || 0;
+            const rounded = roundToNearest(p11d, 2500);
+            const bik = rounded * 0.04;
+            
+            document.getElementById(`evBikLabel${carNum}`).textContent = 
+                `Estimated EV BIK: ${formatCurrency(bik)}`;
+        }
+
+        function updatePensionContribution() {
+            if (!document.getElementById('startDate').value) return;
+            
+            const startDate = document.getElementById('startDate').value;
+            const increment = parseInt(document.getElementById('incrementForward').value) || 0;
+            const totalPAs = parseFloat(document.getElementById('totalPAs').value) || 10;
+            
+            const payInfo = getConsultantPayInfo(startDate, increment);
+            const basicSalary = payInfo.salaryAtApril2026;
+            const paValue = basicSalary / 10;
+            const contractedPAs = Math.min(totalPAs, 10);
+            
+            let oncallPercent = 0;
+            if (document.getElementById('oncallYes').checked) {
+                oncallPercent = parseFloat(document.getElementById('oncallPercent').value) || 0;
+            }
+            
+            let evSacrifice = 0;
+            if (document.getElementById('evYes').checked) {
+                const evCount = parseInt(document.querySelector('input[name="evCount"]:checked').value) || 1;
+                for (let i = 1; i <= evCount; i++) {
+                    const sac = parseFloat(document.getElementById(`evSacrifice${i}`).value) || 0;
+                    evSacrifice += sac * 12;
+                }
+            }
+            
+            // Calculate pensionable pay with pro-rata if increment during year
+            let pensionablePay = (contractedPAs * paValue) + (basicSalary * oncallPercent / 100) - evSacrifice;
+            
+            if (payInfo.incrementDuringYear) {
+                const paValueAfter = payInfo.salaryAfterIncrement / 10;
+                const oncallAfter = payInfo.salaryAfterIncrement * (oncallPercent / 100);
+                const monthsBeforeInc = payInfo.monthsBeforeIncrement;
+                const monthsAfterInc = payInfo.monthsAfterIncrement;
+                
+                pensionablePay = ((contractedPAs * paValue) + (basicSalary * oncallPercent / 100) - evSacrifice) * monthsBeforeInc / 12 +
+                                ((contractedPAs * paValueAfter) + oncallAfter - evSacrifice) * monthsAfterInc / 12;
+            }
+            
+            const rate = getPensionRate(pensionablePay);
+            const annualContrib = pensionablePay * rate;
+            const monthlyContrib = annualContrib / 12;
+            
+            document.getElementById('estimatedPensionLabel').textContent = 
+                `Estimated monthly NHS Pension contribution: ${formatCurrency(monthlyContrib)}`;
+        }
+
+        // Event listeners
+        document.getElementById('startDate').addEventListener('change', updateSalaryPreview);
+        document.getElementById('startDate').addEventListener('change', updatePensionContribution);
+        document.getElementById('incrementForward').addEventListener('input', updateSalaryPreview);
+        document.getElementById('incrementForward').addEventListener('input', updatePensionContribution);
+        document.getElementById('totalPAs').addEventListener('input', updateSalaryPreview);
+        document.getElementById('totalPAs').addEventListener('input', updatePensionContribution);
+
+        document.getElementById('evYes').addEventListener('change', () => {
+            document.getElementById('evDetails').classList.remove('hidden');
+            updateEVCars();
+            updatePensionContribution();
+        });
+        document.getElementById('evNo').addEventListener('change', () => {
+            document.getElementById('evDetails').classList.add('hidden');
+            updatePensionContribution();
+        });
+
+        document.querySelectorAll('input[name="evCount"]').forEach(radio => {
+            radio.addEventListener('change', updateEVCars);
+        });
+
+        document.getElementById('oncallYes').addEventListener('change', () => {
+            document.getElementById('oncallDetails').classList.remove('hidden');
+            updatePensionContribution();
+        });
+        document.getElementById('oncallNo').addEventListener('change', () => {
+            document.getElementById('oncallDetails').classList.add('hidden');
+            updatePensionContribution();
+        });
+        document.getElementById('oncallPercent').addEventListener('input', updatePensionContribution);
+
+        document.getElementById('wliYes').addEventListener('change', () => {
+            document.getElementById('wliDetails').classList.remove('hidden');
+        });
+        document.getElementById('wliNo').addEventListener('change', () => {
+            document.getElementById('wliDetails').classList.add('hidden');
+        });
+
+        document.getElementById('pensionYes').addEventListener('change', () => {
+            document.getElementById('pensionDetails').classList.remove('hidden');
+        });
+        document.getElementById('pensionNo').addEventListener('change', () => {
+            document.getElementById('pensionDetails').classList.add('hidden');
+        });
+
+        document.getElementById('pensionMatchNo').addEventListener('change', () => {
+            document.getElementById('pensionOverride').classList.remove('hidden');
+        });
+        document.getElementById('pensionMatchYes').addEventListener('change', () => {
+            document.getElementById('pensionOverride').classList.add('hidden');
+        });
+
+        document.getElementById('otherIncome').addEventListener('change', (e) => {
+            document.getElementById('otherIncomeDetails').classList.toggle('hidden', !e.target.checked);
+        });
+
+        document.getElementById('sippCheck').addEventListener('change', (e) => {
+            document.getElementById('sippDetails').classList.toggle('hidden', !e.target.checked);
+        });
+
+        document.getElementById('giftAidCheck').addEventListener('change', (e) => {
+            document.getElementById('giftAidDetails').classList.toggle('hidden', !e.target.checked);
+        });
+
+        document.getElementById('feesCheck').addEventListener('change', (e) => {
+            document.getElementById('feesDetails').classList.toggle('hidden', !e.target.checked);
+        });
+
+        document.getElementById('breakdownCollapsible').addEventListener('click', () => {
+            document.getElementById('breakdownContent').classList.toggle('expanded');
+            document.querySelector('#breakdownCollapsible span:last-child').textContent = 
+                document.getElementById('breakdownContent').classList.contains('expanded') ? '▲' : '▼';
+        });
+
+        document.getElementById('assumptionsCollapsible').addEventListener('click', () => {
+            document.getElementById('assumptionsContent').classList.toggle('expanded');
+            document.querySelector('#assumptionsCollapsible span:last-child').textContent = 
+                document.getElementById('assumptionsContent').classList.contains('expanded') ? '▲' : '▼';
+        });
+
+        // Payslip check listeners and stale results tracking (after they're added to DOM)
+        document.addEventListener('change', (e) => {
+            // Mark results as stale if they exist
+            if (document.getElementById('results').innerHTML.trim() !== '') {
+                markResultsAsStale();
+            }
+            
+            if (e.target.name === 'basicMatch' && e.target.value === 'no') {
+                document.getElementById('basicMismatch')?.classList.remove('hidden');
+            } else if (e.target.name === 'basicMatch' && e.target.value === 'yes') {
+                document.getElementById('basicMismatch')?.classList.add('hidden');
+            }
+            
+            if (e.target.name === 'paMatch' && e.target.value === 'no') {
+                document.getElementById('paMismatch')?.classList.remove('hidden');
+            } else if (e.target.name === 'paMatch' && e.target.value === 'yes') {
+                document.getElementById('paMismatch')?.classList.add('hidden');
+            }
+        });
+
+        // Track input changes to mark results as stale
+        document.addEventListener('input', (e) => {
+            // Mark results as stale if they exist
+            if (document.getElementById('results').innerHTML.trim() !== '') {
+                markResultsAsStale();
+            }
+        });
+    </script>
+</body>
+</html>
